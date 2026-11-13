@@ -1,19 +1,30 @@
 import express from "express";
 import { TmdbProvider } from "../infrastructure/TmdbProvider.js";
+import { InMemoryWatchlistRepository } from "../infrastructure/InMemoryWatchlistRepository.js";
 import { SearchMediaUseCase } from "../application/SearchMediaUseCase.js";
+import { AddToWatchlistUseCase } from "../application/AddToWatchlistUseCase.js";
 import { SearchController } from "./SearchController.js";
+import { WatchlistController } from "./WatchlistController.js";
 
 const app = express();
 app.use(express.json());
 
-// Dependencies
-const tmdbProvider = new TmdbProvider("TEMP_API_KEY");
+const tmdbProvider = new TmdbProvider("A_TUA_API_KEY");
+const watchlistRepo = new InMemoryWatchlistRepository();
+
 const searchUseCase = new SearchMediaUseCase(tmdbProvider);
+const addWatchlistUseCase = new AddToWatchlistUseCase(
+  watchlistRepo,
+  tmdbProvider,
+);
+
 const searchController = new SearchController(searchUseCase);
+const watchlistController = new WatchlistController(addWatchlistUseCase);
 
-// Route (bind is necessary so the method doesn't lose the class reference)
 app.get("/api/search", searchController.handle.bind(searchController));
+app.post("/api/watchlist", watchlistController.add.bind(watchlistController));
 
-app.listen(3000, () => {
-  console.log("Media Tracker API running on Port 3000.");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`Media Tracker API a correr na porta ${PORT}`),
+);
