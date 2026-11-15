@@ -1,6 +1,6 @@
 import test, { mock } from "node:test";
 import assert from "node:assert";
-import { SearchController } from "../../src/presentation/SearchController.js";
+import { SearchController } from "../../src/presentation/search-controller.js";
 
 test("SearchController - devolve 200 e os resultados em caso de sucesso", async () => {
   // 1. STUB: Simula o Caso de Uso

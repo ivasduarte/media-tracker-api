@@ -1,4 +1,4 @@
-import { Media } from '../domain/Media.js';
+import { Media } from '../domain/media.js';
 
 export class TmdbProvider {
   constructor(apiKey) {
@@ -9,7 +9,7 @@ export class TmdbProvider {
   async search(query) {
     const url = `${this.baseUrl}/search/movie?query=${query}&api_key=${this.apiKey}`;
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Erro no TMDB.');
+    if (!response.ok) throw new Error('TMDB_ERROR');
     const data = await response.json();
     return data.results.map(item => new Media({
       externalId: item.id.toString(),
@@ -23,7 +23,7 @@ export class TmdbProvider {
     const response = await fetch(url);
     
     if (response.status === 404) return null;
-    if (!response.ok) throw new Error('Erro na comunicação com a API do TMDB.');
+    if (!response.ok) throw new Error('TMDB_ERROR');
     
     const data = await response.json();
     

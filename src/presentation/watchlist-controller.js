@@ -13,24 +13,17 @@ export class WatchlistController {
     try {
       const { userId, mediaId } = req.body;
       if (!userId || !mediaId) {
-        return res.status(400).json({
-          error:
-            "The parameters 'userId' and 'mediaId' are required in the body.",
-        });
+        return res.status(400).json({ errorCode: 'MISSING_PARAMETERS' });
       }
 
       const result = await this.addToWatchlistUseCase.execute(userId, mediaId);
       return res.status(201).json(result);
     } catch (error) {
-      console.error("[DEBUG] Erro no AddToWatchlist:", error);
-      
-      if (
-        error.message === "Media not found." ||
-        error.message === "The title is already on my watchlist."
-      ) {
-        return res.status(400).json({ error: error.message });
+      if (['MEDIA_NOT_FOUND', 'MEDIA_ALREADY_EXISTS'].includes(error.message)) {
+        return res.status(400).json({ errorCode: error.message });
       }
-      return res.status(500).json({ error: "Internal server error." });
+      console.error(error);
+      return res.status(500).json({ errorCode: 'INTERNAL_SERVER_ERROR' });
     }
   }
 
@@ -50,8 +43,7 @@ export class WatchlistController {
   async rate(req, res) {
     try {
       const { userId, mediaId, score } = req.body;
-      if (score === undefined)
-        return res.status(400).json({ error: "Score is mandatory." });
+      if (score === undefined) return res.status(400).json({ errorCode: 'MISSING_PARAMETERS' });
 
       const result = await this.rateMediaUseCase.execute(
         userId,

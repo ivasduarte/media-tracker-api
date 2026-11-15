@@ -1,6 +1,6 @@
 import test, { mock } from 'node:test';
 import assert from 'node:assert';
-import { TmdbProvider } from '../../src/infrastructure/TmdbProvider.js';
+import { TmdbProvider } from '../../src/infrastructure/tmdb-provider.js';
 
 test('TmdbProvider - pesquisa e mapeia filmes corretamente (Mocking)', async (t) => {
     const provider = new TmdbProvider('fake-api-key');

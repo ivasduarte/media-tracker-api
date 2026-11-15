@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
-import { InMemoryWatchlistRepository } from '../../src/infrastructure/InMemoryWatchlistRepository.js';
-import { Watchlist } from '../../src/domain/Watchlist.js';
+import { InMemoryWatchlistRepository } from '../../src/infrastructure/in-memory-watchlist.repo.js';
+import { Watchlist } from '../../src/domain/watchlist.js';
 
 test('InMemoryWatchlistRepository - guarda e recupera a watchlist', async () => {
   const repository = new InMemoryWatchlistRepository();

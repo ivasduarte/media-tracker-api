@@ -1,10 +1,10 @@
 import test, { mock } from "node:test";
 import assert from "node:assert";
-import { AddToWatchlistUseCase } from "../../src/application/AddToWatchlistUseCase.js";
-import { Watchlist } from "../../src/domain/Watchlist.js";
-import { Media } from "../../src/domain/Media.js";
+import { AddToWatchlist } from "../../src/application/add-to-watchlist.js";
+import { Watchlist } from "../../src/domain/watchlist.js";
+import { Media } from "../../src/domain/media.js";
 
-test("AddToWatchlistUseCase - orquestra a adição e guarda na base de dados", async () => {
+test("AddToWatchlist - orquestra a adição e guarda na base de dados", async () => {
   // 1. STUB: Repository falso
   const mockWatchlist = new Watchlist("user-1");
   const mockRepo = {
@@ -22,7 +22,7 @@ test("AddToWatchlistUseCase - orquestra a adição e guarda na base de dados", a
     getById: mock.fn(async () => dummyMedia),
   };
 
-  const useCase = new AddToWatchlistUseCase(mockRepo, mockProvider);
+  const useCase = new AddToWatchlist(mockRepo, mockProvider);
 
   // 3. AÇÃO
   const result = await useCase.execute("user-1", "101");
@@ -39,7 +39,7 @@ test("AddToWatchlistUseCase - orquestra a adição e guarda na base de dados", a
   assert.strictEqual(mockRepo.save.mock.calls[0].arguments[0].userId, "user-1");
 });
 
-test("AddToWatchlistUseCase - rejeita se o media não existir no TMDB", async () => {
+test("AddToWatchlist - rejeita se o media não existir no TMDB", async () => {
   const mockRepo = {
     findByUserId: mock.fn(async () => new Watchlist("user-1")),
   };
@@ -47,9 +47,10 @@ test("AddToWatchlistUseCase - rejeita se o media não existir no TMDB", async ()
   // STUB forçando retorno nulo (simula filme não encontrado)
   const mockProvider = { getById: mock.fn(async () => null) };
 
-  const useCase = new AddToWatchlistUseCase(mockRepo, mockProvider);
+  const useCase = new AddToWatchlist(mockRepo, mockProvider);
 
-  await assert.rejects(async () => await useCase.execute("user-1", "999"), {
-    message: "Media not found.",
-  });
+  await assert.rejects(
+    async () => await useCase.execute('user-1', '999'),
+    { message: 'MEDIA_NOT_FOUND' }
+  );
 });

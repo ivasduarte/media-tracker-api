@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert";
-import { Watchlist } from "../../src/domain/Watchlist.js";
+import { Watchlist } from "../../src/domain/watchlist.js";
 
 // Dummy de Media (cumpre a estrutura mínima sem importar a classe real)
 const dummyMedia = { externalId: "123", title: "The Matrix" };
@@ -21,9 +21,10 @@ test("Watchlist - impede a adição de duplicados", () => {
   const watchlist = new Watchlist("user-1");
   watchlist.add(dummyMedia);
 
-  assert.throws(() => watchlist.add(dummyMedia), {
-    message: "This title is already saved in user's watchlist.",
-  });
+  assert.throws(
+    () => watchlist.add(dummyMedia),
+    { message: 'MEDIA_ALREADY_EXISTS' }
+  );
 });
 
 test("WatchlistEntry - aplica as regras de avaliação", () => {
@@ -38,9 +39,9 @@ test("WatchlistEntry - aplica as regras de avaliação", () => {
 
   // Testar limites (abaixo de 1 e acima de 5)
   assert.throws(() => entry.rate(0), {
-    message: "Rating must be between 1 and 5.",
+    message: 'RATING_INVALID_RANGE',
   });
   assert.throws(() => entry.rate(6), {
-    message: "Rating must be between 1 and 5.",
+    message: 'RATING_INVALID_RANGE',
   });
 });

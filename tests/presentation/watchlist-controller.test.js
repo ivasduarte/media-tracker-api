@@ -1,6 +1,6 @@
 import test, { mock } from "node:test";
 import assert from "node:assert";
-import { WatchlistController } from "../../src/presentation/WatchlistController.js";
+import { WatchlistController } from "../../src/presentation/watchlist-controller.js";
 
 test("WatchlistController - retorna 201 ao adicionar com sucesso", async () => {
   const mockUseCase = {

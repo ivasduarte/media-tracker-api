@@ -1,9 +1,9 @@
 import test, { mock } from "node:test";
 import assert from "node:assert";
-import { SearchMediaUseCase } from "../../src/application/SearchMediaUseCase.js";
-import { Media } from "../../src/domain/Media.js";
+import { SearchMedia } from "../../src/application/search.js";
+import { Media } from "../../src/domain/media.js";
 
-test("SearchMediaUseCase - orquestra a pesquisa corretamente (Mock Provider)", async () => {
+test("SearchMedia - orquestra a pesquisa corretamente (Mock Provider)", async () => {
   // 1. STUB: Cria um provider falso que devolve um array fixo de Medias
   const mockProvider = {
     search: mock.fn(async () => [
@@ -11,7 +11,7 @@ test("SearchMediaUseCase - orquestra a pesquisa corretamente (Mock Provider)", a
     ]),
   };
 
-  const useCase = new SearchMediaUseCase(mockProvider);
+  const useCase = new SearchMedia(mockProvider);
 
   // 2. AÇÃO: Executa o caso de uso
   const results = await useCase.execute("Matrix");
@@ -25,12 +25,12 @@ test("SearchMediaUseCase - orquestra a pesquisa corretamente (Mock Provider)", a
   assert.strictEqual(mockProvider.search.mock.calls[0].arguments[0], "Matrix");
 });
 
-test("SearchMediaUseCase - rejeita query vazia", async () => {
+test("SearchMedia - rejeita query vazia", async () => {
   const mockProvider = { search: mock.fn() };
-  const useCase = new SearchMediaUseCase(mockProvider);
+  const useCase = new SearchMedia(mockProvider);
 
   await assert.rejects(async () => await useCase.execute(""), {
-    message: "Search query is mandatory.",
+    message: 'SEARCH_QUERY_IS_REQUIRED',
   });
 
   // Confirma que o provider nunca foi chamado

@@ -1,6 +1,6 @@
-import { Watchlist } from "../domain/Watchlist.js";
-import { WatchlistEntry } from "../domain/WatchlistEntry.js";
-import { Media } from "../domain/Media.js";
+import { Watchlist } from "../domain/watchlist.js";
+import { WatchlistEntry } from "../domain/watchlist-entry.js";
+import { Media } from "../domain/media.js";
 
 export class PostgresWatchlistRepository {
   constructor(pool) {

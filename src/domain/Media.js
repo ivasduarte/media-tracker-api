@@ -1,6 +1,6 @@
 export class Media {
     constructor({ id, externalId, title, type, releaseDate }) {
-        if(!title || !type) throw new Error("Title and type are mandatory.");
+        if(!title || !type) throw new Error('TITLE_AND_TYPE_ARE_MANDATORY');
 
         this.id = id; // Internal ID from the database
         this.externalId = externalId; // TMDB's ID

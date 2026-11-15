@@ -1,14 +1,14 @@
 import "dotenv/config";
 import express from "express";
 import pg from "pg";
-import { TmdbProvider } from "../infrastructure/TmdbProvider.js";
-import { PostgresWatchlistRepository } from "../infrastructure/PostgresWatchlistRepository.js";
-import { SearchMediaUseCase } from "../application/SearchMediaUseCase.js";
-import { AddToWatchlistUseCase } from "../application/AddToWatchlistUseCase.js";
-import { MarkMediaAsWatchedUseCase } from "../application/MarkMediaAsWatchedUseCase.js";
-import { RateMediaUseCase } from "../application/RateMediaUseCase.js";
-import { SearchController } from "./SearchController.js";
-import { WatchlistController } from "./WatchlistController.js";
+import { TmdbProvider } from "../infrastructure/tmdb-provider.js";
+import { PostgresWatchlistRepository } from "../infrastructure/postgres-watchlist.repo.js";
+import { SearchMediaUseCase } from "../application/search.js";
+import { AddToWatchlistUseCase } from "../application/add-to-watchlist.js";
+import { MarkMediaAsWatchedUseCase } from "../application/mark-as-watched.js";
+import { RateMediaUseCase } from "../application/rate.js";
+import { SearchController } from "./search-controller.js";
+import { WatchlistController } from "./watchlist-controller.js";
 
 const app = express();
 app.use(express.json());
