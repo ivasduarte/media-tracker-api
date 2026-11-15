@@ -1,19 +1,24 @@
-name: Node.js CI
+name: API Tests
 
 on:
-    push:
-        branches: [ "main" ]
-    pull_request:
-        branches: [ "main" ]
+  push:
+    branches: ["main"]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Use Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: '22.x'
-            - run: npm ci
-            - run: node --test
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Correr testes
+        run: node --test
