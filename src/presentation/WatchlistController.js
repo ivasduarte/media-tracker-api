@@ -10,7 +10,28 @@ export class WatchlistController {
   }
 
   async add(req, res) {
-    /* ... manténs o código anterior ... */
+    try {
+      const { userId, mediaId } = req.body;
+      if (!userId || !mediaId) {
+        return res.status(400).json({
+          error:
+            "The parameters 'userId' and 'mediaId' are required in the body.",
+        });
+      }
+
+      const result = await this.addToWatchlistUseCase.execute(userId, mediaId);
+      return res.status(201).json(result);
+    } catch (error) {
+      console.error("[DEBUG] Erro no AddToWatchlist:", error);
+      
+      if (
+        error.message === "Media not found." ||
+        error.message === "The title is already on my watchlist."
+      ) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ error: "Internal server error." });
+    }
   }
 
   async markAsWatched(req, res) {
